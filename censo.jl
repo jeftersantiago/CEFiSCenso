@@ -75,7 +75,7 @@ function testar(n)
     opt = alternatives(option[!,question[n]]);
     println(opt);
     ans = data[!,n];
-    out = setData(ans,opt)
-
+    out = setData(ans,opt);
+    println("Number of answers = " , out[1] + out[2] + out[3] + out[4] + out[5])
     barGraph(question[n], [1:length(opt)], opt, out);
 end
