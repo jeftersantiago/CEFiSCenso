@@ -1,6 +1,8 @@
 using CSV, DataFrames
 include("graph.jl")
 
+
+# deixar isso dinamico também, permitir passar o nome do arquivo em uma função
 data = CSV.read("inst.csv", DataFrame)
 option = CSV.read("opt_inst.csv", DataFrame)
 
