@@ -39,43 +39,31 @@ question = getindex(names(option), 1:length(names(option)))
 
 # 4) Store images in the barGraph() function.
 
-# i must take all alternatives that ARE NOT missing and generate the options
-# in the graph
-# optList = option[!,question[i]]
-function alternatives(optList) 
+# Percorre a lista de alternativa e remove os indices missing 
+# Retorna a lista de opções, a partir da lista é possivel chamar a função
+# de gráfico e etc.
+# opt = option[!,question[i]]
+function alternatives(opt) 
     i = 1;
-    n = length(optList) -  length(findall(ismissing,optList));
-    # ta dando problema na declaração desse vetor
-    # rodar o código pra ver
-    genList = Array{AbstractString,1}(undef,n);
-
-    while i in 1:length(optList) 
-        if !isequal(optList[i],missing)
-            println(i)
-            append!(genList, optList(i));
+    n = length(opt) -  length(findall(ismissing,opt));
+    # não sei declarar array direito então aqui vai a gambiarra
+    # declarei dessa forma e no final do loop removo o primeiro valor usando
+    # a função popfirst
+    list = [""] 
+    while i in 1:length(opt) 
+        if !isequal(opt[i],missing)
+            # usa o push aqui pq não quero ter que lidar com o indice em cada array
+            push!(list, opt[i]);
        end
             i+=1;
     end
-    return genList;
+    popfirst!(list);
+    return reverse(list,1,length(list));
 end
 
 
 
-
-#function realCensus(quest,ans)
-#    values = alternatives = 0 ;
-#    i=1;
-#    while i in 1:length(quest)
-#        x=1;
-#        while x in 1:length(ans[!,quest[i]])
-#            # fazer a ordenação vai ser complicado!
-#            end
-#        barGraph(quest[i], length(alternatives),alternatives,values)
-#        i++;
-#        values = alternatives = 0;
-#        end
-#    end
-
+# isso vai ser alterado
 # Gráfico das médias ponderadas
 function ponderada(list)
     # não gosto disso, mas não pensei em nenhuma fórmula melhor ainda
