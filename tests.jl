@@ -1,4 +1,5 @@
 # isso vai ser alterado
+
 # Gráfico das médias ponderadas
 function ponderada(list)
     # não gosto disso, mas não pensei em nenhuma fórmula melhor ainda

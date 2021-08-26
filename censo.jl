@@ -34,7 +34,7 @@ function alternatives(opt)
     while i in 1:length(opt) 
         if !isequal(opt[i],missing)
             # usa o push aqui pq não quero ter que lidar com o indice em cada array
-            push!(list, opt[i]);
+            push!(list, string(opt[i]));
        end
             i+=1;
     end
@@ -54,9 +54,11 @@ function setData(dataList,optList)
     while i in 1:length(optList)
         list[i] = 0;
         x=1;
+#        println("1º Loop: " ,  i);
         while x in 1:length(dataList)
             if isequal(string(optList[i]), string(dataList[x]))
                 list[i]+=1;
+#                println("---- 2º Loop: " , i);
             end
             x+=1;
         end
@@ -65,12 +67,13 @@ function setData(dataList,optList)
     return list;
 end
 
-# it's working
-opt = alternatives(option[!,question[3]]);
-ans = data[!,question[3]];
-out = setData(ans,opt)
 
+function testar(n)
+    println(question[n]);
+    opt = alternatives(option[!,question[n]]);
+    println(opt);
+    ans = data[!,n];
+    out = setData(ans,opt)
 
-
-
-
+    barGraph(question[n], [1:length(opt)], opt, out);
+end
