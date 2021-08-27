@@ -1,27 +1,39 @@
 using CSV, DataFrames
-include("graph.jl")
+using Printf, Plots
+using StatsBase
+using StatsPlots
+
+dataFile="institucional_respostas.csv";
+optionsFile="institucional_opcoes.csv";
 
 # deixar isso dinamico também, permitir passar o nome do arquivo em uma função
-data = CSV.read("inst.csv", DataFrame)
-option = CSV.read("opt_inst.csv", DataFrame)
-
-# censo institucional
-## removendo as colunas data, nome e nº usp
-select!(data, Not(1:3))
-select!(option, Not(1:3))
-
+global data=0;
+global option=0;
 # lista com as perguntas
-question = getindex(names(option), 1:length(names(option)))
-# como declarar lista com opções
-# opt = option[!,question[i]]
+global question=0;
 
-# sobre número de pessoas que responderam
-#x = ["Física", "Ciências Físicas e Biomoleculares", "Física Computacional"]
-# número de pessoas em cada curos
-#y = [33, 33, 33]
-# gráfico em barra para o número de pessoas em cada curso
-#pie(x, y, title = "Quantidade de alunos que responderam por curso", l = 0.5)
+function setFile(path,isData)
+    if isData
+        global data = CSV.read(string(dataFile), DataFrame)
+        ## removendo as colunas data, nome e nº usp
+        select!(data, Not(1:3))
+    else
+       global  option = CSV.read(string(optionsFile), DataFrame)
+       select!(option, Not(1:3))
+       global  question = getindex(names(option), 1:length(names(option)))
+    end
+end
+function genGraph(question, x , options, ans,fileName)
+   bar!(ans,alpha=1,xrotation=0,label="", xticks=(1:1:length(options),options),color="red",subplot=1)
 
+    plot!(title=question,titlefont=font(6,"Noto Sans Mono"))
+    plot!(ylabel="Número de respostas",titlefont=font(8,"Noto Sans Mono"))
+
+    closeall()
+
+    figName = string("./graficos/", fileName, ".pdf");
+    savefig(figName);
+end
 
 # Percorre a lista de alternativa e remove os indices missing
 # Retorna a lista de opções, a partir da lista é possivel chamar a função
@@ -42,14 +54,8 @@ function alternatives(opt)
     popfirst!(list);
     return reverse(list,1,length(list));
 end
-
-# 1) Create a dynamic array of values that are going to increment
-# every time an equal option appears.
-# run through the array and list in a new array the values
-# optList must come from alternatives(x)
+# Retorna uma lista com os valores (número de escolhas) para cada opção
 function setData(dataList,optList)
-# list is the list with the answers accounted for each option
-    # declarer array that will be counting
     list = Array{Int64,1}(undef,length(optList));
     i=1;
     while i in 1:length(optList)
@@ -66,24 +72,12 @@ function setData(dataList,optList)
     return list;
 end
 
-
 function run(n)
     println(question[n]);
     opt = alternatives(option[!,question[n]]);
     println(opt);
     ans = data[!,n];
     out = setData(ans,opt);
-    #println("Number of answers = " , out[1] + out[2] + out[3] + out[4] + out[5])
     fileName = string("pergunta",string(n));
-    barGraph(question[n], [1:length(out)], opt, out, fileName );
+    genGraph(question[n], [1:length(out)], opt, out, fileName );
 end
-
-j=1;
-while j in 1:43
- println("Arquivo nº " , j);
- run(j);
- global j+=1;
-end
-
-
-
