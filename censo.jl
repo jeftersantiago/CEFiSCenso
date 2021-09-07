@@ -2,24 +2,20 @@ using CSV, DataFrames
 using Printf, Plots
 using StatsBase
 using StatsPlots
-
-dataFile="institucional_respostas.csv";
-optionsFile="institucional_opcoes.csv";
-
 # deixar isso dinamico também, permitir passar o nome do arquivo em uma função
 global data=0;
 global option=0;
 # lista com as perguntas
 global question=0;
 
-function setFile(path,isData)
+function setFile(path,isData, removeAt)
     if isData
         global data = CSV.read(string(dataFile), DataFrame)
         ## removendo as colunas data, nome e nº usp
-        select!(data, Not(1:3))
+        select!(data, Not(1:removeAt))
     else
        global  option = CSV.read(string(optionsFile), DataFrame)
-       select!(option, Not(1:3))
+       select!(option, Not(1:removeAt))
        global  question = getindex(names(option), 1:length(names(option)))
     end
 end
@@ -62,7 +58,9 @@ function setData(dataList,optList)
         list[i] = 0;
         x=1;
         while x in 1:length(dataList)
+            println("Aqui")
             if isequal(string(optList[i]), string(dataList[x]))
+                println("\n =============== aqui ============== \n")
                 list[i]+=1;
             end
             x+=1;
@@ -72,12 +70,30 @@ function setData(dataList,optList)
     return list;
 end
 
-function run(n)
-    println(question[n]);
-    opt = alternatives(option[!,question[n]]);
-    println(opt);
-    ans = data[!,n];
-    out = setData(ans,opt);
-    fileName = string("pergunta",string(n));
-    genGraph(question[n], [1:length(out)], opt, out, fileName );
+function genGraph(question, x , options, ans,fileName)
+    bar(ans,alpha=1,xrotation=0,label="", xticks=(1:1:length(options),options),color="red",subplot=1)
+
+    plot!(title=question,titlefont=font(6,"Noto Sans Mono"))
+    plot!(ylabel="Número de respostas",titlefont=font(8,"Noto Sans Mono"))
+
+    closeall()
+
+    figName = string("./graficos/", fileName, ".pdf");
+    savefig(figName);
 end
+
+function run(n)
+   global opt = alternatives(option[!,question[n]]);
+   global ans = data[!,n];
+   global out = setData(ans,opt);
+    fileName = string("pergunta",string(n));
+    genGraph(question[n], out, opt, out, fileName );
+end
+
+
+
+
+
+
+
+
