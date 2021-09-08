@@ -1,8 +1,9 @@
 #+TITLE: Censo - CEFiSC
 #+AUTHOR: Jefter Santiago
-** TODO Gerar cores aleatórias para cada barra do gráfico
-** TODO Tirar as legendas do eixo x e deixar separado por cor
-** TODO Função  que permite relacionar as tabelas e gerar os gráficos, exemplo: respostas por curso/ano
+* TODOs
+ - Gerar cores aleatórias para cada barra do gráfico
+ - Tirar as legendas do eixo x e deixar separado por cor
+ - Função  que permite relacionar as tabelas e gerar os gráficos, exemplo: respostas por curso/ano
 * Dependências
   - =CSV= , =DataFrames=, =Plots=, =StatsBase=, =StatsPlots=
    Exemplo de como instalar um pacote.
@@ -25,17 +26,17 @@
     setFile(dados, true, 3)
     setFile(opcoes, false, 3)
   #+end_src
-** Censo institucional 
+** Censo institucional
 *** Gerar gráficos individuais
     Depois de carregar o =DataFrame= se rodar essa função irá gerar um gráfico
     que será salvo na pasta [[./graficos/]] .
     #+begin_src julia
       n = 1
       runForIndex(n)
-    #+end_src 
+    #+end_src
 *** Gerar todos os gráficos
     Basicamente roda a função =runForIndex(n)= em um loop.
     #+begin_src julia
       runForAll(dataFile, optionsFile,removeColumnsUpTo)
     #+end_src
-    
+
