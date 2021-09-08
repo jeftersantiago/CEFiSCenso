@@ -1,6 +1,5 @@
 #+TITLE: Censo - CEFiSC
 #+AUTHOR: Jefter Santiago
-
 * Dependências
   - =CSV= , =DataFrames=, =Plots=, =StatsBase=, =StatsPlots=
    Exemplo de como instalar um pacote.
@@ -8,9 +7,32 @@
       julia> import Pkg
       julia> Pkg.add("CSV")
     #+end_src
-
+* Funções
+** =setFile(path,isData,removeAt)
+   Essa função cria o =DataFrame= a partir do caminho dado, a váriavel =removeAt=
+   é para indicar quais são as primeiras colunas que vão ser removidas do
+   =DataFrame=, carimbo de horário, nome, n° usp, etc.
+   A váriavel =isData= deve ser =true= se o arquivo selecionado for um dos de
+   respostas.
+* Como usar
+  #+begin_src julia
+    include("censo.jl")
+    dados = "respostas.csv"
+    opcoes = "opcoes.csv"
+    setFile(dados, true, 3)
+    setFile(opcoes, false, 3)
+  #+end_src
+** Censo institucional 
+*** Gerar gráficos individuais
+    Depois de carregar o =DataFrame= se rodar essa função irá gerar um gráfico
+    que será salvo na pasta [[./graficos/]] .
+    #+begin_src julia
+      n = 1
+      runForIndex(n)
+    #+end_src 
+*** Gerar todos os gráficos
+    Basicamente roda a função =runForIndex(n)= em um loop.
+    #+begin_src julia
+      runForAll(dataFile, optionsFile,removeColumnsUpTo)
+    #+end_src
     
-
-
-
-
