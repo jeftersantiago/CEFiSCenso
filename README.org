@@ -1,5 +1,19 @@
 #+TITLE: Censo - CEFiSC
 #+AUTHOR: Jefter Santiago
+
+Para usar as funções é necessário ter dois arquivos =.csv=, um com as respostas
+e outro com as alternativas, resolvi fazer dessa forma porque o forms não
+armazena as opções que não foram selecionadas. Por exemplo, em uma questão
+com 4 alternativas =a,b,c e d=, em um cenário onde a letra d não foi selecionada
+nenhuma vez o forms apenas "finge" que não existe essa opção. Então optei por
+fazer uma planilha separada só com as opções e deixar isso de forma dinâmica,
+sem que haja necessidade de escrever as alternativas dentro do código.
+
+ =A planilha com as opções deve ser idêntica à das respostas=,
+ com isso quero dizer que =tem que ter o mesmo número de colunas=.
+O motivo pra isso é que tô usando a mesma função para remover as colunas
+desnecessárias e.g carimbo de horario, n° usp.
+
 * TODOs
  - Gerar cores aleatórias para cada barra do gráfico
  - Tirar as legendas do eixo x e deixar separado por cor
