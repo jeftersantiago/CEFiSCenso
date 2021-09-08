@@ -8,7 +8,7 @@
       julia> Pkg.add("CSV")
     #+end_src
 * Funções
-** =setFile(path,isData,removeAt)
+** =setFile= (path,isData,removeAt)
    Essa função cria o =DataFrame= a partir do caminho dado, a váriavel =removeAt=
    é para indicar quais são as primeiras colunas que vão ser removidas do
    =DataFrame=, carimbo de horário, nome, n° usp, etc.
