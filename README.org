@@ -26,25 +26,25 @@ desnecessárias e.g carimbo de horario, n° usp.
    julia> Pkg.add("CSV")
  #+end_src
 * Funções
-** =setFile(path,isData,removeAt)=
+**** =setFile(path,isData,removeAt)=
    Essa função cria o =DataFrame= a partir do caminho dado, a váriavel =removeAt=
    é para indicar quais são as primeiras colunas que vão ser removidas do
    =DataFrame=, carimbo de horário, nome, n° usp, etc.
    A váriavel =isData= deve ser =true= se o arquivo selecionado for um dos de
    respostas.
-** =alternatives(opt)=
+**** =alternatives(opt)=
    Essa função returna uma lista.
    A utilidade dela é remover os dados do tipo =missing= da tabela das opções.
-** =setData(dataList,optList)=
+**** =setData(dataList,optList)=
    Essa é a função que gera uma lista com os valores para cada questão do
    formulário. Segue a mesma sequência que a lista de opções, ou seja,
    o primeiro valor da lista é referente à primeira alternativa. 
-** =genGraph(question,answers,options,fileName)=
+**** =genGraph(question,answers,options,fileName)=
    Gera o gráfico em barras para os inputs fornecidos.
-** =runForIndex(n)=
+**** =runForIndex(n)=
    Depois de selecionar os arquivos com os dados, ao rodar essa função para
    um valor n referente à alternativa qualquer na base de dados e irá gerar o gráfico.
-** =runForAll(dataFile,optionsFile,removeColumnsUpTo)=
+**** =runForAll(dataFile,optionsFile,removeColumnsUpTo)=
    Automatiza o uso de quase todas as outras funções. Gera todos os gráficos
    para todas questões em um loop. *(Por enquanto só funciona para o censo
    institucional mas o plano é fazer funcionar para todos)*
