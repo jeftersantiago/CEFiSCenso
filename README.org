@@ -21,10 +21,10 @@ desnecessárias e.g carimbo de horario, n° usp.
 * Dependências
   - =CSV= , =DataFrames=, =Plots=, =StatsBase=, =StatsPlots=
    Exemplo de como instalar um pacote.
-    #+begin_src julia
-      julia> import Pkg
-      julia> Pkg.add("CSV")
-    #+end_src
+ #+begin_src julia
+   julia> import Pkg
+   julia> Pkg.add("CSV")
+ #+end_src
 * Funções
 ** =setFile= (path,isData,removeAt)
    Essa função cria o =DataFrame= a partir do caminho dado, a váriavel =removeAt=
