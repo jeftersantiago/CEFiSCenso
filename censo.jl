@@ -1,5 +1,5 @@
 using CSV, DataFrames
-using Printf, Plots
+using Plots
 using StatsBase
 using StatsPlots
 # deixar isso dinamico também, permitir passar o nome do arquivo em uma função
@@ -19,18 +19,6 @@ function setFile(path,isData, removeAt)
        global  question = getindex(names(option), 1:length(names(option)))
     end
 end
-function genGraph(question, x , options, ans,fileName)
-   bar!(ans,alpha=1,xrotation=0,label="", xticks=(1:1:length(options),options),color="red",subplot=1)
-
-    plot!(title=question,titlefont=font(6,"Noto Sans Mono"))
-    plot!(ylabel="Número de respostas",titlefont=font(8,"Noto Sans Mono"))
-
-    closeall()
-
-    figName = string("./graficos/", fileName, ".pdf");
-    savefig(figName);
-end
-
 # Percorre a lista de alternativa e remove os indices missing
 # Retorna a lista de opções, a partir da lista é possivel chamar a função
 # de gráfico e etc.
@@ -58,9 +46,7 @@ function setData(dataList,optList)
         list[i] = 0;
         x=1;
         while x in 1:length(dataList)
-            println("Aqui")
             if isequal(string(optList[i]), string(dataList[x]))
-                println("\n =============== aqui ============== \n")
                 list[i]+=1;
             end
             x+=1;
@@ -70,30 +56,32 @@ function setData(dataList,optList)
     return list;
 end
 
-function genGraph(question, x , options, ans,fileName)
-    bar(ans,alpha=1,xrotation=0,label="", xticks=(1:1:length(options),options),color="red",subplot=1)
-
-    plot!(title=question,titlefont=font(6,"Noto Sans Mono"))
-    plot!(ylabel="Número de respostas",titlefont=font(8,"Noto Sans Mono"))
-
+function genGraph(question,answers,options,fileName)
+    bar(answers,alpha=1,xrotation=0,label="",xticks=(1:1:length(options),options), color="red", subplot=1)
+    plot!(title=question,titlefont=font(6,"Roboto Regular"))
+    plot!(ylabel="Número de respostas",titlefont=font(8,"Roboto Regular"))
     closeall()
-
-    figName = string("./graficos/", fileName, ".pdf");
+    figName = string("./graficos/", fileName,".pdf");
     savefig(figName);
 end
 
-function run(n)
+function runForIndex(n)
    global opt = alternatives(option[!,question[n]]);
    global ans = data[!,n];
    global out = setData(ans,opt);
-    fileName = string("pergunta",string(n));
-    genGraph(question[n], out, opt, out, fileName );
+   fileName = string("pergunta",string(n));
+   genGraph(question[n],out,opt,fileName)
 end
 
-
-
-
-
-
-
+function runForAll(dataFile,optionsFile, removeColumnsUpTo)
+    setFile(dataFile, true, removeColumnsUpTo);
+    setFile(optionsFile,false,removeColumnsUpTo);
+    i=1;
+    while i in 1:size
+        println("File nº ", i);
+        runForIndex(i);
+        i+=1;
+    end
+    println("======== Acabou ========== \n");
+end
 
