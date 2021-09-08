@@ -1,5 +1,8 @@
 #+TITLE: Censo - CEFiSC
 #+AUTHOR: Jefter Santiago
+** TODO Gerar cores aleatórias para cada barra do gráfico
+** TODO Tirar as legendas do eixo x e deixar separado por cor
+** TODO Função  que permite relacionar as tabelas e gerar os gráficos, exemplo: respostas por curso/ano
 * Dependências
   - =CSV= , =DataFrames=, =Plots=, =StatsBase=, =StatsPlots=
    Exemplo de como instalar um pacote.
@@ -8,7 +11,7 @@
       julia> Pkg.add("CSV")
     #+end_src
 * Funções
-** =setFile(path,isData,removeAt)
+** =setFile= (path,isData,removeAt)
    Essa função cria o =DataFrame= a partir do caminho dado, a váriavel =removeAt=
    é para indicar quais são as primeiras colunas que vão ser removidas do
    =DataFrame=, carimbo de horário, nome, n° usp, etc.
