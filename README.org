@@ -1,0 +1,16 @@
+#+TITLE: Censo - CEFiSC
+#+AUTHOR: Jefter Santiago
+
+* Dependências
+  - =CSV= , =DataFrames=, =Plots=, =StatsBase=, =StatsPlots=
+   Exemplo de como instalar um pacote.
+    #+begin_src julia
+      julia> import Pkg
+      julia> Pkg.add("CSV")
+    #+end_src
+
+    
+
+
+
+
