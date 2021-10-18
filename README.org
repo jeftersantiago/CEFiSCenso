@@ -1,73 +1,11 @@
-#+TITLE: Censo - CEFiSC
+#+TITLE: CEFiSCenso
 #+AUTHOR: Jefter Santiago
 
-Para usar as funções é necessário ter dois arquivos =.csv=, um com as respostas
-e outro com as alternativas, resolvi fazer dessa forma porque o forms não
-armazena as opções que não foram selecionadas. Por exemplo, em uma questão
-com 4 alternativas =a,b,c e d=, em um cenário onde a letra d não foi selecionada
-nenhuma vez o forms apenas "finge" que não existe essa opção. Então optei por
-fazer uma planilha separada só com as opções e deixar isso de forma dinâmica,
-sem que haja necessidade de escrever as alternativas dentro do código.
-
- =A planilha com as opções deve ser idêntica à das respostas=,
- com isso quero dizer que =tem que ter o mesmo número de colunas=.
-O motivo pra isso é que tô usando a mesma função para remover as colunas
-desnecessárias e.g carimbo de horario, n° usp.
-
-* TODOs
- - Gerar cores aleatórias para cada barra do gráfico
- - Tirar as legendas do eixo x e deixar separado por cor
- - Função  que permite relacionar as tabelas e gerar os gráficos, exemplo: respostas por curso/ano
-* Dependências
-  - =CSV= , =DataFrames=, =Plots=, =StatsBase=, =StatsPlots=
-   Exemplo de como instalar um pacote.
- #+begin_src julia
-   julia> import Pkg
-   julia> Pkg.add("CSV")
- #+end_src
-* Funções
-**** =setFile(path,isData,removeAt)=
-   Essa função cria o =DataFrame= a partir do caminho dado, a váriavel =removeAt=
-   é para indicar quais são as primeiras colunas que vão ser removidas do
-   =DataFrame=, carimbo de horário, nome, n° usp, etc.
-   A váriavel =isData= deve ser =true= se o arquivo selecionado for um dos de
-   respostas.
-**** =alternatives(opt)=
-   Essa função returna uma lista.
-   A utilidade dela é remover os dados do tipo =missing= da tabela das opções.
-**** =setData(dataList,optList)=
-   Essa é a função que gera uma lista com os valores para cada questão do
-   formulário. Segue a mesma sequência que a lista de opções, ou seja,
-   o primeiro valor da lista é referente à primeira alternativa. 
-**** =genGraph(question,answers,options,fileName)=
-   Gera o gráfico em barras para os inputs fornecidos.
-**** =runForIndex(n)=
-   Depois de selecionar os arquivos com os dados, ao rodar essa função para
-   um valor n referente à alternativa qualquer na base de dados e irá gerar o gráfico.
-**** =runForAll(dataFile,optionsFile,removeColumnsUpTo)=
-   Automatiza o uso de quase todas as outras funções. Gera todos os gráficos
-   para todas questões em um loop. *(Por enquanto só funciona para o censo
-   institucional mas o plano é fazer funcionar para todos)*
-
-* Como usar
-  #+begin_src julia
-    include("censo.jl")
-    dados = "respostas.csv"
-    opcoes = "opcoes.csv"
-    setFile(dados, true, 3)
-    setFile(opcoes, false, 3)
-  #+end_src
-** Censo institucional
-*** Gerar gráficos individuais
-    Depois de carregar o =DataFrame= se rodar essa função irá gerar um gráfico
-    que será salvo na pasta [[./graficos/]] .
-    #+begin_src julia
-      n = 1
-      runForIndex(n)
-    #+end_src
-*** Gerar todos os gráficos
-    Basicamente roda a função =runForIndex(n)= em um loop.
-    #+begin_src julia
-      runForAll(dataFile, optionsFile,removeColumnsUpTo)
-    #+end_src
-
+* =TODO= - Código
+ - [X] Gerar cores aleatórias para cada barra do gráfico
+ - [ ] Tirar as legendas do eixo x e deixar separado por cor
+ - [ ] Função  que permite relacionar as tabelas e gerar os gráficos, exemplo: respostas por curso/ano
+ - [X] Censo institucional 
+* =TODO= - Documentação
+ - [ ] Tutorial de como usar as funções
+ - [ ] Documentação das funções
