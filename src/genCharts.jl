@@ -19,7 +19,7 @@ function barChart(qt,ans,opt,fileName)
     
     bar((1:length(opt))', ans', title=qt,color= colours', label=legend);
     
-    plot!(ylabel="n° de respostas",titlefont=font(8,"Roboto Regular"));
+    plot!(ylabel="n° de respostas",xaxis=nothing, titlefont=font(8,"Roboto Regular"));
 
     closeall();  
     savefig(fileName);
