@@ -2,12 +2,48 @@ include("genCharts.jl")
 
 using CSV, DataFrames
 
-global data=0;
-global option=0;
-global opt=0;
 
-# lista com as perguntas
-global question=0;
+mutable struct Data 
+    answers::DataFrame;
+    options::DataFrame;
+    questions::Vector{String};
+end
+
+function setData(dataPath::String,optionsPath,removeAt::Int64)
+
+    answers = CSV.read(string(dataPath), DataFrame);
+    select!(answers ,Not(1:removeAt));
+
+    options = CSV.read(string(optionsPath),DataFrame);
+    select!(options,Not(1:removeAt));
+
+    questions = getindex(names(options), 1:length(names(options)));
+
+    return Data(answers,options,questions);
+end
+
+function optionsFor(data::Data, index::Int64)::Vector{String}
+    return alternatives(data.options[!,data.questions[index]]);
+end
+
+function optionsFor(index::Int64,data::Data)::Vector{String}
+    return alternatives(data.options[!,data.questions[index]]);
+end
+
+function answersFor(data::Data, index::Int64)
+    return data.answers[!,index];
+end
+
+function answersFor(index::Int64,data::Data)
+    return data.answers[!,index];
+end
+
+function questionFor(index::Int64,data::Data)
+    return data.questions[index]; 
+end
+function questionFor(data::Data, index::Int64)
+    return data.questions[index]; 
+end
 
 function setFile(path::String,isData::Bool, removeAt::Int64)
     if isData
@@ -40,40 +76,62 @@ function alternatives(opt::AbstractArray)
 end
 
 # Retorna uma lista com os valores (número de escolhas) para cada opção
-function setData(dataList::AbstractArray,optList::AbstractArray)::AbstractArray
-    list = Array{Int64,1}(undef,length(optList));
+function setAnswers(answers::AbstractArray,options::AbstractArray)
+    formatedAnswers = Array{Int64,1}(undef,length(options));
     i=1;
-    while i in 1:length(optList)
-        list[i] = 0;
+    while i in 1:length(options)
+        formatedAnswers[i] = 0;
         j=1;
-        while j in 1:length(dataList)
-            if isequal(string(optList[i]), string(dataList[j]))
-                list[i]+=1;
+        while j in 1:length(answers)
+            if isequal(string(options[i]), string(answers[j]))
+                formatedAnswers[i]+=1;
             end
             j+=1;
         end
         i+=1;
     end
-    return list;
+    return formatedAnswers;
 end
+
 
 function runForIndex(n::Int64)
    global opt = alternatives(option[!,question[n]]);
    global ans = data[!,n];
    global out = setData(ans,opt);
-   fileName = string("./Graficos/Grafico - ",string(n), ".pdf");
-   barChart(question[n],out,opt,fileName)
+   fileName = string("Grafico - ",string(n), ".pdf");
+   barChart(question[n],out,opt,fileName);
 end
 
-function runForAll(dataFile,optionsFile, removeColumnsUpTo)
+function runForIndex(n::Int64, data::Data)
+    fileName = string("Grafico - ",string(n), ".pdf");
 
-    setFile(dataFile, true, removeColumnsUpTo);
-    setFile(optionsFile,false,removeColumnsUpTo);
+    options = optionsFor(data,n);
+    answers = answersFor(data,n); 
+    formatedAnswers = setAnswers(answers,options);
+    question = questionFor(data,n);
 
+    barChart(question, formatedAnswers,options,fileName);
+end
+
+function censoInstitucional(dataFile::String,optionsFile::String, removeColumnsUpTo::Int64)
+
+    data = setData(dataFile, optionsFile,removeColumnsUpTo);
+    
     i=1;
-    while i in 1:length(names(data))
+    while i in 1:length(names(data.answers))
         println("Gerando arquivo nº ", i);
-        runForIndex(i);
+        runForIndex(i,data)
         i+=1;
     end
 end
+
+function censoDisciplinas(dataFile::String, optionsFile::String,removeColumnsUpTo::Int64)
+    
+end
+
+# Relate two tables (to start) and
+# output in a bar chart
+function relateTables()
+end
+
+

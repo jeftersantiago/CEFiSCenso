@@ -10,17 +10,26 @@ function barChart(qt,ans,opt,fileName)
 
     # Colour palette
     # see https://docs.juliaplots.org/latest/generated/colorschemes/
-    palette = cgrad(:Set3_12);
-    cs=rand(1:10, 10);
+    palette = cgrad(:glasbey_category10_n256)#:Set3_12);
+    cs=rand(1:100, 10);
     colours = [palette[i] for i in cs];
 
     legend = opt[:,:];
     legend = reshape(legend,(1,length(legend)));
     
     bar((1:length(opt))', ans', title=qt,color= colours', label=legend);
+
+    #default
+    fontsize=8;
+    if length(qt)>90
+        fontsize=6;
+    end
     
-    plot!(ylabel="n° de respostas",xaxis=nothing, titlefont=font(8,"Roboto Regular"));
+    plot!(ylabel="n° de respostas",legend=:best, xaxis=nothing, titlefont=font(fontsize,"Monospaced"));
+
+    fileName= string("./Graficos/Barra/",fileName);
 
     closeall();  
     savefig(fileName);
 end
+
