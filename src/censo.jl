@@ -45,18 +45,6 @@ function questionFor(data::Data, index::Int64)
     return data.questions[index]; 
 end
 
-function setFile(path::String,isData::Bool, removeAt::Int64)
-    if isData
-        global data = CSV.read(string(dataFile), DataFrame)
-        ## removendo as colunas data, nome e nº usp
-        select!(data, Not(1:removeAt))
-    else
-       global  option = CSV.read(string(optionsFile), DataFrame)
-       select!(option, Not(1:removeAt))
-       global  question = getindex(names(option), 1:length(names(option)))
-    end
-end
-
 # Removes 'missing' elements and returns the options list.
 function alternatives(opt::AbstractArray)
     i = 1;
@@ -125,13 +113,10 @@ function censoInstitucional(dataFile::String,optionsFile::String, removeColumnsU
     end
 end
 
-function censoDisciplinas(dataFile::String, optionsFile::String,removeColumnsUpTo::Int64)
-    
-end
-
 # Relate two tables (to start) and
 # output in a bar chart
 function relateTables()
+    
 end
 
 
