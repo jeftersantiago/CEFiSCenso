@@ -1,5 +1,5 @@
-using Plots,StatsPlots
-using StatsBase
+using Plots
+using StatsPlots, StatsBase
 
 # qt = titulo do gráfico
 # ans = dados, lista de valores de cada respostas
@@ -21,11 +21,8 @@ function barChart(qt,ans,opt,fileName)
 
     #default
     fontsize=8;
-    if length(qt)>90
-        fontsize=6;
-    end
-    
-    plot!(ylabel="n° de respostas",legend=:best, xaxis=nothing, titlefont=font(fontsize,"Monospaced"));
+   
+    plot!(ylabel="n° de respostas",legend=:outerright, xaxis=nothing, titlefont=font(fontsize,"Monospaced"));
 
     fileName= string("./Graficos/Barra/",fileName);
 

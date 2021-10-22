@@ -102,7 +102,6 @@ function runForIndex(n::Int64, data::Data)
 end
 
 function censoInstitucional(dataFile::String,optionsFile::String, removeColumnsUpTo::Int64)
-
     data = setData(dataFile, optionsFile,removeColumnsUpTo);
     
     i=1;
