@@ -23,11 +23,11 @@ function setData(dataPath::String,optionsPath,removeAt::Int64)
 end
 
 function optionsFor(data::Data, index::Int64)::Vector{String}
-    return alternatives(data.options[!,data.questions[index]]);
+    return setOptions(data.options[!,data.questions[index]]);
 end
 
 function optionsFor(index::Int64,data::Data)::Vector{String}
-    return alternatives(data.options[!,data.questions[index]]);
+    return setOptions(data.options[!,data.questions[index]]);
 end
 
 function answersFor(data::Data, index::Int64)
@@ -46,7 +46,7 @@ function questionFor(data::Data, index::Int64)
 end
 
 # Removes 'missing' elements and returns the options list.
-function alternatives(opt::AbstractArray)
+function setOptions(opt::AbstractArray)
     i = 1;
     n = length(opt) -  length(findall(ismissing,opt));
     # declarei dessa forma e no final do loop removo o primeiro valor usando
@@ -83,7 +83,7 @@ end
 
 
 function runForIndex(n::Int64)
-   global opt = alternatives(option[!,question[n]]);
+   global opt = setOptions(option[!,question[n]]);
    global ans = data[!,n];
    global out = setData(ans,opt);
    fileName = string("Grafico - ",string(n), ".pdf");
