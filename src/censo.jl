@@ -1,13 +1,14 @@
 include("genCharts.jl")
 
 using CSV, DataFrames
-
+global data;
 
 mutable struct Data 
     answers::DataFrame;
     options::DataFrame;
     questions::Vector{String};
 end
+
 
 function setData(dataPath::String,optionsPath,removeAt::Int64)
 
@@ -16,6 +17,7 @@ function setData(dataPath::String,optionsPath,removeAt::Int64)
 
     options = CSV.read(string(optionsPath),DataFrame);
     select!(options,Not(1:removeAt));
+
 
     questions = getindex(names(options), 1:length(names(options)));
 
@@ -27,7 +29,7 @@ function optionsFor(data::Data, index::Int64)::Vector{String}
 end
 
 function optionsFor(index::Int64,data::Data)::Vector{String}
-    return setOptions(data.options[!,data.questions[index]]);
+    return setOptions(data.options[!,data.questions[index]]); 
 end
 
 function answersFor(data::Data, index::Int64)
@@ -45,7 +47,7 @@ function questionFor(data::Data, index::Int64)
     return data.questions[index]; 
 end
 
-# Removes 'missing' elements and returns the options list.
+    # Removes 'missing' elements and returns the options list.
 function setOptions(opt::AbstractArray)
     i = 1;
     n = length(opt) -  length(findall(ismissing,opt));
@@ -81,7 +83,6 @@ function setAnswers(answers::AbstractArray,options::AbstractArray)
     return formatedAnswers;
 end
 
-
 function runForIndex(n::Int64)
    global opt = setOptions(option[!,question[n]]);
    global ans = data[!,n];
@@ -102,7 +103,7 @@ function runForIndex(n::Int64, data::Data)
 end
 
 function censoInstitucional(dataFile::String,optionsFile::String, removeColumnsUpTo::Int64)
-    data = setData(dataFile, optionsFile,removeColumnsUpTo);
+    global  data = setData(dataFile, optionsFile,removeColumnsUpTo);
     
     i=1;
     while i in 1:length(names(data.answers))
@@ -112,10 +113,46 @@ function censoInstitucional(dataFile::String,optionsFile::String, removeColumnsU
     end
 end
 
-# Relate two tables (to start) and
-# output in a bar chart
-function relateTables()
-    
+function censoDisciplinas(dataFile::String,optionsFile::String, removeColumnsUpTo::Int64)
+    global data = setData(dataFile, optionsFile, removeColumnsUpTo);
+    relate(data);
+end 
+
+
+
+function relate(dt::Data)
+
+    disciplinas = optionsFor(dt,1);
+
+    for i in disciplinas
+
+        is_equal(name::String) = name == i 
+
+        for j in 2:length(dt.questions)
+            dict = Dict();
+            for l in optionsFor(dt,j)
+                dict[l] = 0;
+            end
+            df = DataFrame(A = answersFor(dt,1), B = answersFor(dt, j));
+            tmp_qt = filter(:A => is_equal,df);
+            tmp_ans = groupby(tmp_qt, :B);
+            print("\n TMP GROUP \n ", tmp_ans);
+#           for k in 1:tmp_ans.ngroups
+#               #dict[tmp_ans.keymap.keys[k][1]] = length(tmp_ans[k].:B);
+#               print("\n numero de grupos = ", tmp_ans.ngroups);
+#               print("\n", string(tmp_ans.keymap.keys[k][1]))
+#               # length(tmp_ans[k].:B);
+#           end
+            for k in 1:tmp_ans.ngroups
+                print(tmp_ans.keymap.keys[k][1]);
+            end
+        end
+    end
 end
+
+
+
+
+
 
 
