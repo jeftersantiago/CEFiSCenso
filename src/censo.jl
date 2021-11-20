@@ -120,36 +120,51 @@ end
 
 
 
-function relate(dt::Data)
+function relate(data::Data)
 
-    disciplinas = optionsFor(dt,1);
+    disciplinas = optionsFor(data,1)[1];
 
-    for i in disciplinas
+#    for i in disciplinas
 
-        is_equal(name::String) = name == i 
+        is_equal(name::String) = name == disciplinas # i 
 
-        for j in 2:length(dt.questions)
+        for j in 2:2#length(data.questions)
+            println("j = ", j);
             dict = Dict();
-            for l in optionsFor(dt,j)
+
+            for l in optionsFor(data,j)
                 dict[l] = 0;
             end
-            df = DataFrame(A = answersFor(dt,1), B = answersFor(dt, j));
+
+
+            df = DataFrame(A = answersFor(data,1), B = answersFor(data, j));
+
+            println("\n", questionFor(data,j), "\n")
+
             tmp_qt = filter(:A => is_equal,df);
             tmp_ans = groupby(tmp_qt, :B);
-            print("\n TMP GROUP \n ", tmp_ans);
-#           for k in 1:tmp_ans.ngroups
-#               #dict[tmp_ans.keymap.keys[k][1]] = length(tmp_ans[k].:B);
-#               print("\n numero de grupos = ", tmp_ans.ngroups);
-#               print("\n", string(tmp_ans.keymap.keys[k][1]))
-#               # length(tmp_ans[k].:B);
-#           end
-            for k in 1:tmp_ans.ngroups
-                print(tmp_ans.keymap.keys[k][1]);
-            end
-        end
-    end
-end
 
+            for k in 1:tmp_ans.ngroups
+                tmp_list = tmp_ans[k];
+                size = length(tmp_list.B);
+                dict[getindex(tmp_list.B,1)] = size;
+            end
+            println("DICT : \n",dict)
+            ans = [];# change this 1 later
+
+
+
+#            for l in 2:
+
+
+
+#           qt = questionFor(data,2);
+#           opt = sort(optionsFor(data,2));
+#           fileName = disciplinas * j;
+#           barChart(qt,ans,opt,fileName);
+        end
+#    end
+end
 
 
 
