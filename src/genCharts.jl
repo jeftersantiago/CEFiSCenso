@@ -52,7 +52,7 @@ function barChart(qt,ans,opt,fileName)
     for i in 1:length(opt)
         tmp = opt[i];
         tmp = TextWrap.wrap(tmp, width=20);
-        println(tmp);
+#        println(tmp);
         opt[i] = tmp;
     end 
 

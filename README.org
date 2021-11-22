@@ -2,7 +2,9 @@
 #+AUTHOR: Jefter Santiago
 
 * =TODO= - Código
- - [ ] Função  que permite relacionar as tabelas e gerar os gráficos, exemplo: respostas por curso/ano
+ - [ ] Questões que aceitam mais de uma resposta
+ - [ ] Ignorar texto nas questões que aceitam alternativas + texto
+ - [X] Função  que permite relacionar as tabelas e gerar os gráficos, exemplo: respostas por curso/ano
  - [X] arrumar as fontes, pra caberem no grafico - talvez uma função wrap
  - [X] Gerar cores aleatórias para cada barra do gráfico
  - [X] Tirar as legendas do eixo x e deixar separado por cor

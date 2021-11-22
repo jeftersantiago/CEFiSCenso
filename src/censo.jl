@@ -122,48 +122,78 @@ end
 
 function relate(data::Data)
 
-    disciplinas = optionsFor(data,1)[1];
+    disciplinas = optionsFor(data,1);
 
-#    for i in disciplinas
+    for i in disciplinas
 
-        is_equal(name::String) = name == disciplinas # i 
+        is_equal(name::String) = name ==  i 
 
-        for j in 2:2#length(data.questions)
+        for j in 2:length(data.questions)
+
             println("j = ", j);
+
             dict = Dict();
 
+            qt = questionFor(data,j);
+            opt = optionsFor(data,j);
+            ans = answersFor(data,j);
+
             for l in optionsFor(data,j)
-                dict[l] = 0;
+                dict[string(l)] = 0;
             end
 
-
-            df = DataFrame(A = answersFor(data,1), B = answersFor(data, j));
+            df = DataFrame(A = answersFor(data,1), B = ans);
 
             println("\n", questionFor(data,j), "\n")
 
             tmp_qt = filter(:A => is_equal,df);
             tmp_ans = groupby(tmp_qt, :B);
 
+            println("HERE\n", tmp_ans);
+
+            #           i = 1;
+            #           new_ans = [];
+            #           while i < length(tmp_ans)              
+            #               each_ans = ans[i];
+            #               tmp_split = split(each_ans, ", ");
+            #               if(length(tmp_split) > 1)
+            #                   for k in tmp_split
+            #                       append!(new_ans,k);                        
+            #                   end
+            #               else
+            #                   append!(new_ans,each_ans);
+            #               end
+            #               i += 1;
+            #           end
+            #           tmp_ans = new_ans;
+
             for k in 1:tmp_ans.ngroups
-                tmp_list = tmp_ans[k];
-                size = length(tmp_list.B);
-                dict[getindex(tmp_list.B,1)] = size;
+                if(j != 21)
+                    tmp_list = tmp_ans[k];
+                    size = length(tmp_list.B);
+                    dict[string(getindex(tmp_list.B,1))] = size;
+                end
             end
-            println("DICT : \n",dict)
-            ans = [];# change this 1 later
 
+           println("Dicionario\n",dict);
+           println("Nº valores = ",length(dict));
+           println("Options\n", opt);
+           println("Nº opções = ", length(opt));
+            
+            formatted_ans =  Array{Int64,1}(undef,length(opt));
 
+            k = 1;
+            while length(dict) > 0 && length(ans) > k
+                formatted_ans[k] = dict[optionsFor(data,j)[k]];
+                delete!(dict,string(opt[k]));
+                k += 1;
+            end
+            #            println("answers = ", formatted_ans );
 
-#            for l in 2:
-
-
-
-#           qt = questionFor(data,2);
-#           opt = sort(optionsFor(data,2));
-#           fileName = disciplinas * j;
-#           barChart(qt,ans,opt,fileName);
+            fileName = i * " - " * string(j) * ".pdf";
+            barChart(qt,formatted_ans,opt,fileName);
         end
-#    end
+    end
 end
 
 
