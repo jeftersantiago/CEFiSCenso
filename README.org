@@ -12,3 +12,6 @@
 * =TODO= - Documentação
  - [ ] Tutorial de como usar as funções
  - [ ] Documentação das funções
+
+* References
+  - Storopoli, Huijzer and Alonso (2021). Julia Data Science. https://juliadatascience.io. ISBN: 9798489859165.

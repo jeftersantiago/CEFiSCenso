@@ -1,5 +1,5 @@
 using Plots
-using StatsPlots, StatsBase
+using StatsBase
 using TextWrap
 
 # qt = titulo do gráfico
